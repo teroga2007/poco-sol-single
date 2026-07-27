@@ -8,6 +8,7 @@ type Language = 'es' | 'en'
 type Dictionary = typeof es
 
 const releaseDate = new Date('2026-07-29T00:00:00-06:00')
+const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`
 const platforms = [
   { name: 'Spotify', url: 'https://open.spotify.com/artist/6x1cCNcT4hhPqdjuSNEVGG', mark: 'S' },
   { name: 'Apple Music', url: 'https://music.apple.com/artist/1645638114', mark: '♩' },
@@ -73,10 +74,10 @@ function App() {
   }
 
   return <main>
-    <audio ref={audio} src="/rana-bruja-poco-sol.wav" preload="metadata" onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} onTimeUpdate={updatePreview} />
+    <audio ref={audio} src={asset('rana-bruja-poco-sol.wav')} preload="metadata" onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} onTimeUpdate={updatePreview} />
     <div className="grain" />
     <header className="nav shell">
-      <a href="#top" className="wordmark" aria-label="Rana Bruja"><img src="/rana-bruja-logo.jpg" alt="Rana Bruja" /></a>
+      <a href="#top" className="wordmark" aria-label="Rana Bruja"><img src={asset('rana-bruja-logo.jpg')} alt="Rana Bruja" /></a>
       <nav aria-label="Main navigation"><a href="#historia">{t.nav.story}</a><a href="#videos">{t.nav.watch}</a><a href="#redes">{t.nav.follow}</a></nav>
       <button className="language" onClick={() => setLanguage(language === 'es' ? 'en' : 'es')} aria-label="Change language">{language === 'es' ? 'EN' : 'ES'}</button>
     </header>
@@ -95,7 +96,7 @@ function App() {
       </div>
       <div className="cover-wrap">
         <div className="cover-glow" />
-        <img className="cover" src="/poco-sol-cover.png" alt="Poco Sol — Rana Bruja cover art" />
+        <img className="cover" src={asset('poco-sol-cover.png')} alt="Poco Sol — Rana Bruja cover art" />
         <Leaf />
         <p className="cover-credit">{t.hero.credit}</p>
       </div>
@@ -124,7 +125,7 @@ function App() {
 
     {released && <section id="plataformas" className="platforms shell"><p className="eyebrow"><span />{t.platforms.eyebrow}</p><h2>{t.platforms.title}</h2><div className="platform-list">{platforms.map(p => <a key={p.name} href={p.url} target="_blank" rel="noreferrer"><b>{p.mark}</b>{p.name}<span>↗</span></a>)}</div></section>}
 
-    <footer id="redes"><div className="shell footer"><div><p className="eyebrow"><span />{t.social.eyebrow}</p><h2>{t.social.title}</h2></div><img className="band-photo" src="/rana-bruja-band.jpg" alt="Rana Bruja" /><div className="socials"><a href="https://www.facebook.com/ranabruja/" target="_blank" rel="noreferrer">{t.social.facebook} <span>↗</span></a><a href="https://www.instagram.com/rana.bruja/" target="_blank" rel="noreferrer">{t.social.instagram} <span>↗</span></a><a href="https://www.tiktok.com/discover/rana-bruja" target="_blank" rel="noreferrer">{t.social.tiktok} <span>↗</span></a></div><p className="footer-note">{t.footer}</p></div></footer>
+    <footer id="redes"><div className="shell footer"><div><p className="eyebrow"><span />{t.social.eyebrow}</p><h2>{t.social.title}</h2></div><img className="band-photo" src={asset('rana-bruja-band.jpg')} alt="Rana Bruja" /><div className="socials"><a href="https://www.facebook.com/ranabruja/" target="_blank" rel="noreferrer">{t.social.facebook} <span>↗</span></a><a href="https://www.instagram.com/rana.bruja/" target="_blank" rel="noreferrer">{t.social.instagram} <span>↗</span></a><a href="https://www.tiktok.com/discover/rana-bruja" target="_blank" rel="noreferrer">{t.social.tiktok} <span>↗</span></a></div><p className="footer-note">{t.footer}</p></div></footer>
   </main>
 }
 
