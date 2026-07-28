@@ -35,10 +35,10 @@ function App() {
   const released = useMemo(() => new Date() >= releaseDate, [])
   const videos: Video[] = [
     { title: t.videos.film, platform: 'TikTok', url: 'https://www.tiktok.com/@ranabruja/video/7665538832544173333', embed: 'https://www.tiktok.com/player/v1/7665538832544173333?music_info=1&description=1' },
-    { title: t.videos.reel, platform: 'TikTok', url: 'https://www.tiktok.com/@ranabruja/video/7660330169189534997', embed: 'https://www.tiktok.com/player/v1/7660330169189534997?music_info=1&description=1' },
+    { title: t.videos.return, platform: 'TikTok', url: 'https://www.tiktok.com/@ranabruja/video/7660330169189534997', embed: 'https://www.tiktok.com/player/v1/7660330169189534997?music_info=1&description=1' },
     { title: t.videos.talk, platform: 'TikTok', url: 'https://www.tiktok.com/@ranabruja/video/7664766092069342484', embed: 'https://www.tiktok.com/player/v1/7664766092069342484?music_info=1&description=1' },
-    { title: t.videos.reel, platform: 'Instagram', url: 'https://www.instagram.com/p/Davtz-Cyb_c/', embed: 'https://www.instagram.com/p/Davtz-Cyb_c/embed/captioned/' },
-    { title: t.videos.reel, platform: 'Instagram', url: 'https://www.instagram.com/p/DanvNIZxl83/', embed: 'https://www.instagram.com/p/DanvNIZxl83/embed/captioned/' },
+    { title: t.videos.travel, platform: 'Instagram', url: 'https://www.instagram.com/p/Davtz-Cyb_c/', embed: 'https://www.instagram.com/p/Davtz-Cyb_c/embed/captioned/' },
+    { title: t.videos.city, platform: 'Instagram', url: 'https://www.instagram.com/p/DanvNIZxl83/', embed: 'https://www.instagram.com/p/DanvNIZxl83/embed/captioned/' },
     { title: t.videos.sign, platform: 'TikTok' },
   ]
 
