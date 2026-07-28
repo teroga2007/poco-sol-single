@@ -97,7 +97,6 @@ function App() {
       <div className="cover-wrap">
         <div className="cover-glow" />
         <img className="cover" src={asset('poco-sol-cover.png')} alt="Poco Sol — Rana Bruja cover art" />
-        <Leaf />
         <p className="cover-credit">{t.hero.credit}</p>
       </div>
     </section>
