@@ -6,6 +6,7 @@ import './styles.css'
 
 type Language = 'es' | 'en'
 type Dictionary = typeof es
+type Video = { title: string; platform: 'TikTok' | 'Instagram'; url?: string; embed?: string }
 
 const releaseDate = new Date('2026-07-29T00:00:00-06:00')
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`
@@ -28,9 +29,18 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [progress, setProgress] = useState(0)
   const [lyricsOpen, setLyricsOpen] = useState(false)
+  const [activeVideo, setActiveVideo] = useState<Video | null>(null)
   const audio = useRef<HTMLAudioElement>(null)
   const t: Dictionary = language === 'es' ? es : en
   const released = useMemo(() => new Date() >= releaseDate, [])
+  const videos: Video[] = [
+    { title: t.videos.film, platform: 'TikTok', url: 'https://www.tiktok.com/@ranabruja/video/7665538832544173333', embed: 'https://www.tiktok.com/player/v1/7665538832544173333?music_info=1&description=1' },
+    { title: t.videos.reel, platform: 'TikTok', url: 'https://www.tiktok.com/@ranabruja/video/7660330169189534997', embed: 'https://www.tiktok.com/player/v1/7660330169189534997?music_info=1&description=1' },
+    { title: t.videos.talk, platform: 'TikTok', url: 'https://www.tiktok.com/@ranabruja/video/7664766092069342484', embed: 'https://www.tiktok.com/player/v1/7664766092069342484?music_info=1&description=1' },
+    { title: t.videos.reel, platform: 'Instagram', url: 'https://www.instagram.com/p/Davtz-Cyb_c/', embed: 'https://www.instagram.com/p/Davtz-Cyb_c/embed/captioned/' },
+    { title: t.videos.reel, platform: 'Instagram', url: 'https://www.instagram.com/p/DanvNIZxl83/', embed: 'https://www.instagram.com/p/DanvNIZxl83/embed/captioned/' },
+    { title: t.videos.sign, platform: 'TikTok' },
+  ]
 
   useEffect(() => {
     document.documentElement.lang = language
@@ -119,8 +129,10 @@ function App() {
     </section>
 
     <section id="videos" className="videos shell"><p className="eyebrow"><span />{t.videos.eyebrow}</p><div className="section-heading"><h2>{t.videos.title}</h2><p>{t.videos.subtitle}</p></div>
-      <div className="video-grid">{[t.videos.reel, t.videos.reel, t.videos.reel, t.videos.film, t.videos.talk, t.videos.sign].map((title, index) => <article className={`video-card card-${index}`} key={`${title}-${index}`}><div className="card-art"><span>{String(index + 1).padStart(2, '0')}</span><button aria-label={`Play ${title}`}>▶</button></div><div className="card-caption"><h3>{title}</h3><p>{t.videos.comingSoon}</p></div></article>)}</div>
+      <div className="video-grid">{videos.map((video, index) => <article className={`video-card card-${index}`} key={`${video.title}-${index}`}><button className="video-open" disabled={!video.embed} onClick={() => setActiveVideo(video)} aria-label={video.embed ? `${t.videos.watch}: ${video.title}` : `${video.title}: ${t.videos.comingSoon}`}><div className="card-art"><span>{String(index + 1).padStart(2, '0')}</span><i>{video.embed ? '▶' : '✦'}</i></div><div className="card-caption"><h3>{video.title}</h3><p>{video.embed ? video.platform : t.videos.comingSoon}</p></div></button></article>)}</div>
     </section>
+
+    {activeVideo && <div className="video-modal" role="dialog" aria-modal="true" aria-label={activeVideo.title} onMouseDown={() => setActiveVideo(null)}><div className="modal-content" onMouseDown={event => event.stopPropagation()}><button className="modal-close" onClick={() => setActiveVideo(null)} aria-label={t.videos.close}>×</button><iframe src={activeVideo.embed} title={activeVideo.title} allow="encrypted-media; fullscreen" allowFullScreen /><div className="modal-footer"><span>{activeVideo.platform}</span><a href={activeVideo.url} target="_blank" rel="noreferrer">{t.videos.open} {activeVideo.platform} <b>↗</b></a></div></div></div>}
 
     {released && <section id="plataformas" className="platforms shell"><p className="eyebrow"><span />{t.platforms.eyebrow}</p><h2>{t.platforms.title}</h2><div className="platform-list">{platforms.map(p => <a key={p.name} href={p.url} target="_blank" rel="noreferrer"><b>{p.mark}</b>{p.name}<span>↗</span></a>)}</div></section>}
 
