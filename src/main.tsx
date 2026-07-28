@@ -7,21 +7,21 @@ import './styles.css'
 type Language = 'es' | 'en'
 type Dictionary = typeof es
 type Video = { title: string; platform: 'TikTok' | 'Instagram'; url?: string; embed?: string }
+type PlatformId = 'spotify' | 'apple' | 'youtube' | 'amazon' | 'deezer' | 'pandora' | 'tidal'
 
 const releaseDate = new Date('2026-07-29T00:00:00-06:00')
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`
-const platforms = [
-  { name: 'Spotify', url: 'https://open.spotify.com/artist/6x1cCNcT4hhPqdjuSNEVGG', mark: 'S' },
-  { name: 'Apple Music', url: 'https://music.apple.com/artist/1645638114', mark: '♩' },
-  { name: 'YouTube Music', url: 'https://www.youtube.com/channel/UCVVGFFIj-IUluNnfs5PMW4g', mark: '▶' },
-]
-
 function Leaf() {
   return <svg className="leaf" viewBox="0 0 100 100" aria-hidden="true"><path d="M10 86C20 36 50 11 92 8c-4 43-28 70-82 78Z" fill="none" stroke="currentColor" strokeWidth="4"/><path d="M15 83 82 16M44 54c-2-15 4-27 15-35M58 40c13-2 23 3 29 11" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/></svg>
 }
 
 function CalendarIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v3m10-3v3M4.5 9h15M5 5.5h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-12a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><path d="M8 13h.01M12 13h.01M16 13h.01" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round"/></svg>
+}
+
+function PlatformIcon({ id }: { id: PlatformId }) {
+  const symbols: Record<PlatformId, string> = { spotify: '≋', apple: '●', youtube: '▶', amazon: 'a', deezer: '≡', pandora: 'P', tidal: '◆' }
+  return <span className={`platform-icon icon-${id}`} aria-hidden="true">{symbols[id]}</span>
 }
 
 function App() {
@@ -40,6 +40,16 @@ function App() {
     { title: t.videos.travel, platform: 'Instagram', url: 'https://www.instagram.com/p/Davtz-Cyb_c/', embed: 'https://www.instagram.com/p/Davtz-Cyb_c/embed/captioned/' },
     { title: t.videos.city, platform: 'Instagram', url: 'https://www.instagram.com/p/DanvNIZxl83/', embed: 'https://www.instagram.com/p/DanvNIZxl83/embed/captioned/' },
     { title: t.videos.sign, platform: 'TikTok' },
+  ]
+  // Replace only the empty `url` values when each store's release link is available.
+  const streamingPlatforms: { id: PlatformId; name: string; url: string }[] = [
+    { id: 'spotify', name: t.platforms.spotify, url: '' },
+    { id: 'apple', name: t.platforms.apple, url: '' },
+    { id: 'youtube', name: t.platforms.youtube, url: '' },
+    { id: 'amazon', name: t.platforms.amazon, url: '' },
+    { id: 'deezer', name: t.platforms.deezer, url: '' },
+    { id: 'pandora', name: t.platforms.pandora, url: '' },
+    { id: 'tidal', name: t.platforms.tidal, url: '' },
   ]
 
   useEffect(() => {
@@ -99,7 +109,7 @@ function App() {
         <div className="release-panel">
           <p className="release">{t.hero.release}</p>
           <div className="hero-actions">
-            {released ? <a className="button primary" href="#plataformas">{t.platforms.title} <b>↗</b></a> : <button className="button primary" onClick={() => document.getElementById('preview')?.scrollIntoView({ behavior: 'smooth' })}>{t.hero.listen} <b>↓</b></button>}
+            {released ? <div className="release-platforms">{streamingPlatforms.map(platform => <a key={platform.id} className="release-platform" href={platform.url || undefined} target={platform.url ? '_blank' : undefined} rel={platform.url ? 'noreferrer' : undefined} aria-disabled={!platform.url} onClick={event => { if (!platform.url) event.preventDefault() }} title={platform.url ? platform.name : t.platforms.linkSoon}><PlatformIcon id={platform.id} /><span>{platform.name}</span></a>)}</div> : <button className="button primary" onClick={() => document.getElementById('preview')?.scrollIntoView({ behavior: 'smooth' })}>{t.hero.listen} <b>↓</b></button>}
             {!released && <button className="calendar-button" onClick={addReminder}><CalendarIcon />{t.hero.presave}</button>}
           </div>
         </div>
@@ -124,7 +134,7 @@ function App() {
     <section id="historia" className="story shell">
       <div className="story-sticky"><p className="eyebrow"><span />{t.story.eyebrow}</p><h2>{t.story.title}</h2><Leaf /></div>
       <div className="story-text"><p>{t.story.text1}</p><p>{t.story.text2}</p><p>{t.story.text3}</p>
-        <div className="credits"><p className="credits-title">{t.credits.title}</p><div><small>{t.credits.artist}</small><strong>Rana Bruja</strong></div><div><small>{t.credits.composer}</small><strong>{t.credits.names}</strong></div><div><small>{t.credits.lyricist}</small><strong>{t.credits.lyrics}</strong></div></div>
+        <div className="credits"><p className="credits-title">{t.credits.title}</p><div><small>{t.credits.artist}</small><strong>Rana Bruja</strong></div><div><small>{t.credits.lyricist}</small><strong>{t.credits.lyrics}</strong></div><div><small>{t.credits.studio}</small><strong>{t.credits.studioName}</strong></div><div className="credit-composition"><small>{t.credits.composer}</small><strong>{t.credits.names}</strong></div></div>
       </div>
     </section>
 
@@ -134,9 +144,7 @@ function App() {
 
     {activeVideo && <div className="video-modal" role="dialog" aria-modal="true" aria-label={activeVideo.title} onMouseDown={() => setActiveVideo(null)}><div className="modal-content" onMouseDown={event => event.stopPropagation()}><button className="modal-close" onClick={() => setActiveVideo(null)} aria-label={t.videos.close}>×</button><iframe src={activeVideo.embed} title={activeVideo.title} allow="encrypted-media; fullscreen" allowFullScreen /><div className="modal-footer"><span>{activeVideo.platform}</span><a href={activeVideo.url} target="_blank" rel="noreferrer">{t.videos.open} {activeVideo.platform} <b>↗</b></a></div></div></div>}
 
-    {released && <section id="plataformas" className="platforms shell"><p className="eyebrow"><span />{t.platforms.eyebrow}</p><h2>{t.platforms.title}</h2><div className="platform-list">{platforms.map(p => <a key={p.name} href={p.url} target="_blank" rel="noreferrer"><b>{p.mark}</b>{p.name}<span>↗</span></a>)}</div></section>}
-
-    <footer id="redes"><div className="shell footer"><div><p className="eyebrow"><span />{t.social.eyebrow}</p><h2>{t.social.title}</h2></div><img className="band-photo" src={asset('rana-bruja-band.jpg')} alt="Rana Bruja" /><div className="socials"><a href="https://www.facebook.com/ranabruja/" target="_blank" rel="noreferrer">{t.social.facebook} <span>↗</span></a><a href="https://www.instagram.com/rana.bruja/" target="_blank" rel="noreferrer">{t.social.instagram} <span>↗</span></a><a href="https://www.tiktok.com/discover/rana-bruja" target="_blank" rel="noreferrer">{t.social.tiktok} <span>↗</span></a></div><p className="footer-note">{t.footer}</p></div></footer>
+    <footer id="redes"><div className="shell footer"><div><p className="eyebrow"><span />{t.social.eyebrow}</p><h2>{t.social.title}</h2></div><img className="band-photo" src={asset('rana-bruja-band.jpg')} alt="Rana Bruja" /><div className="socials"><a href="https://www.facebook.com/ranabruja/" target="_blank" rel="noreferrer">{t.social.facebook} <span>↗</span></a><a href="https://www.instagram.com/rana.bruja/" target="_blank" rel="noreferrer">{t.social.instagram} <span>↗</span></a><a href="https://www.tiktok.com/discover/rana-bruja" target="_blank" rel="noreferrer">{t.social.tiktok} <span>↗</span></a></div><a className="booking" href="mailto:ranabrujaband@gmail.com"><small>{t.social.booking}</small><strong>ranabrujaband@gmail.com</strong><span>↗</span></a><p className="footer-note">{t.footer}</p></div></footer>
   </main>
 }
 
