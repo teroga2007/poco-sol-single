@@ -43,13 +43,13 @@ function App() {
   ]
   // Replace only the empty `url` values when each store's release link is available.
   const streamingPlatforms: { id: PlatformId; name: string; url: string }[] = [
-    { id: 'spotify', name: t.platforms.spotify, url: '' },
-    { id: 'apple', name: t.platforms.apple, url: '' },
-    { id: 'youtube', name: t.platforms.youtube, url: '' },
-    { id: 'amazon', name: t.platforms.amazon, url: '' },
-    { id: 'deezer', name: t.platforms.deezer, url: '' },
+    { id: 'spotify', name: t.platforms.spotify, url: 'https://open.spotify.com/intl-es/track/3QYzsjvMgGXGLliHioLlPY?si=ec30474857f54ea8' },
+    { id: 'apple', name: t.platforms.apple, url: 'https://music.apple.com/us/album/poco-sol-single/6794020632' },
+    { id: 'youtube', name: t.platforms.youtube, url: 'https://youtu.be/mSqLTcBAhls?si=NEPrQDAr91R1p_pg' },
+    { id: 'amazon', name: t.platforms.amazon, url: 'https://music.amazon.com.mx/albums/B0HB6VR3B6?marketplaceId=A1AM78C64UM0Y8&musicTerritory=MX&ref=dm_sh_EVuFu7J3CfMNCB3Xm9Z9CRFcA' },
+    { id: 'deezer', name: t.platforms.deezer, url: 'https://link.deezer.com/s/33XPXKFyG0juCUmzRZlTR' },
     { id: 'pandora', name: t.platforms.pandora, url: '' },
-    { id: 'tidal', name: t.platforms.tidal, url: '' },
+    { id: 'tidal', name: t.platforms.tidal, url: 'https://tidal.com/album/545787260/u' },
   ]
 
   useEffect(() => {
