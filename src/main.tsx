@@ -7,7 +7,7 @@ import './styles.css'
 type Language = 'es' | 'en'
 type Dictionary = typeof es
 type Video = { title: string; platform: 'TikTok' | 'Instagram'; url?: string; embed?: string }
-type PlatformId = 'spotify' | 'apple' | 'youtube' | 'amazon' | 'deezer' | 'pandora' | 'tidal'
+type PlatformId = 'spotify' | 'apple' | 'youtube' | 'amazon' | 'deezer' | 'tidal'
 
 const releaseDate = new Date('2026-07-29T00:00:00-06:00')
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`
@@ -20,7 +20,7 @@ function CalendarIcon() {
 }
 
 function PlatformIcon({ id }: { id: PlatformId }) {
-  const symbols: Record<PlatformId, string> = { spotify: '≋', apple: '●', youtube: '▶', amazon: 'a', deezer: '≡', pandora: 'P', tidal: '◆' }
+  const symbols: Record<PlatformId, string> = { spotify: '≋', apple: '●', youtube: '▶', amazon: 'a', deezer: '≡', tidal: '◆' }
   return <span className={`platform-icon icon-${id}`} aria-hidden="true">{symbols[id]}</span>
 }
 
@@ -48,7 +48,6 @@ function App() {
     { id: 'youtube', name: t.platforms.youtube, url: 'https://youtu.be/mSqLTcBAhls?si=NEPrQDAr91R1p_pg' },
     { id: 'amazon', name: t.platforms.amazon, url: 'https://music.amazon.com.mx/albums/B0HB6VR3B6?marketplaceId=A1AM78C64UM0Y8&musicTerritory=MX&ref=dm_sh_EVuFu7J3CfMNCB3Xm9Z9CRFcA' },
     { id: 'deezer', name: t.platforms.deezer, url: 'https://link.deezer.com/s/33XPXKFyG0juCUmzRZlTR' },
-    { id: 'pandora', name: t.platforms.pandora, url: '' },
     { id: 'tidal', name: t.platforms.tidal, url: 'https://tidal.com/album/545787260/u' },
   ]
 
