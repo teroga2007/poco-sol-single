@@ -6,7 +6,7 @@ import './styles.css'
 
 type Language = 'es' | 'en'
 type Dictionary = typeof es
-type Video = { title: string; platform: 'TikTok' | 'Instagram'; url?: string; embed?: string }
+type Video = { title: string; platform: 'TikTok' | 'Instagram' | 'YouTube'; url?: string; embed?: string }
 type PlatformId = 'spotify' | 'apple' | 'youtube' | 'amazon' | 'deezer' | 'tidal'
 
 const releaseDate = new Date('2026-07-29T00:00:00-06:00')
@@ -39,7 +39,7 @@ function App() {
     { title: t.videos.talk, platform: 'TikTok', url: 'https://www.tiktok.com/@ranabruja/video/7664766092069342484', embed: 'https://www.tiktok.com/player/v1/7664766092069342484?music_info=1&description=1' },
     { title: t.videos.travel, platform: 'Instagram', url: 'https://www.instagram.com/p/Davtz-Cyb_c/', embed: 'https://www.instagram.com/p/Davtz-Cyb_c/embed/captioned/' },
     { title: t.videos.city, platform: 'Instagram', url: 'https://www.instagram.com/p/DanvNIZxl83/', embed: 'https://www.instagram.com/p/DanvNIZxl83/embed/captioned/' },
-    { title: t.videos.sign, platform: 'TikTok' },
+    { title: t.videos.sign, platform: 'YouTube', url: 'https://youtu.be/daHXA7cs4QA', embed: 'https://www.youtube-nocookie.com/embed/daHXA7cs4QA?rel=0' },
   ]
   // Replace only the empty `url` values when each store's release link is available.
   const streamingPlatforms: { id: PlatformId; name: string; url: string }[] = [
@@ -106,9 +106,9 @@ function App() {
         <p className="eyebrow"><span />{t.hero.eyebrow}</p>
         <h1>{t.hero.title}</h1>
         <div className="release-panel">
-          <p className="release">{t.hero.release}</p>
+          <p className="release">{released ? t.hero.lescoMessage : t.hero.release}</p>
           <div className="hero-actions">
-            {released ? <div className="release-platforms">{streamingPlatforms.map(platform => <a key={platform.id} className="release-platform" href={platform.url || undefined} target={platform.url ? '_blank' : undefined} rel={platform.url ? 'noreferrer' : undefined} aria-disabled={!platform.url} onClick={event => { if (!platform.url) event.preventDefault() }} title={platform.url ? platform.name : t.platforms.linkSoon}><PlatformIcon id={platform.id} /><span>{platform.name}</span></a>)}</div> : <button className="button primary" onClick={() => document.getElementById('preview')?.scrollIntoView({ behavior: 'smooth' })}>{t.hero.listen} <b>↓</b></button>}
+            {released ? <><a className="video-cta" href="https://youtu.be/daHXA7cs4QA" target="_blank" rel="noreferrer">{t.hero.watchLesco} <b>↗</b></a><div className="release-platforms">{streamingPlatforms.map(platform => <a key={platform.id} className="release-platform" href={platform.url || undefined} target={platform.url ? '_blank' : undefined} rel={platform.url ? 'noreferrer' : undefined} aria-disabled={!platform.url} onClick={event => { if (!platform.url) event.preventDefault() }} title={platform.url ? platform.name : t.platforms.linkSoon}><PlatformIcon id={platform.id} /><span>{platform.name}</span></a>)}</div></> : <button className="button primary" onClick={() => document.getElementById('preview')?.scrollIntoView({ behavior: 'smooth' })}>{t.hero.listen} <b>↓</b></button>}
             {!released && <button className="calendar-button" onClick={addReminder}><CalendarIcon />{t.hero.presave}</button>}
           </div>
         </div>
