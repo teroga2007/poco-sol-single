@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "preview:site": "npm run build && node scripts/prepare-site-preview.mjs && vite preview --config vite.site.config.ts"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
